@@ -11,6 +11,7 @@ import gg.vape.api.ApiServices;
 import gg.vape.asm.helper.DescUtils;
 import gg.vape.combat.AttackStrengthTracker;
 import gg.vape.config.ConfigJsonUtils;
+import gg.vape.config.GoatConfigCommand;
 import gg.vape.config.ModuleProfileMetadataCodec;
 import gg.vape.config.Profile;
 import gg.vape.config.PublicProfileSettings;
@@ -559,6 +560,7 @@ public class Vape {
     private void registerEventListeners() {
         EventBus.getInstance().registerListener(PacketDispatchGuard.b, new Predicate[0]);
         EventBus.getInstance().registerListener(new BendableInputDispatcher(), new Predicate[0]);
+        EventBus.getInstance().registerListener(new GoatConfigCommand(), new Predicate[0]);
         EventBus.getInstance().registerListener(AttackPacketTimingTracker.INSTANCE, new Predicate[0]);
         EventBus.getInstance().registerListener(PingManager.INSTANCE, new Predicate[0]);
         EventBus.getInstance().registerListener(RotationManager.INSTANCE, new Predicate[0]);
