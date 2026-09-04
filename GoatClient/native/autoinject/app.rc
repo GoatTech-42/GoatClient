@@ -1,0 +1,13 @@
+#include <windows.h>
+
+101 RCDATA "assets/close.png"
+102 RCDATA "assets/logo.png"
+103 RCDATA "assets/mask-bottom.png"
+104 RCDATA "assets/mask-left.png"
+105 RCDATA "assets/mask-right.png"
+106 RCDATA "assets/mask-top.png"
+107 RCDATA "assets/minimize.png"
+108 RCDATA "assets/proxima-regular.ttf"
+109 RCDATA "assets/proxima-semibold.otf"
+110 RCDATA "assets/rounded-rect.png"
+200 RCDATA "../../build/GoatClientNative.dll"

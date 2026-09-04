@@ -1,0 +1,39 @@
+#include <windows.h>
+
+#define IDI_ICON1 100
+
+// --- application manifest ---
+1 24 "app.manifest"
+
+// --- icon ---
+IDI_ICON1 ICON "goat.ico"
+
+// --- version info ---
+1 VERSIONINFO
+FILEVERSION     4,22,0,0
+PRODUCTVERSION  4,22,0,0
+FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
+FILEFLAGS       0
+FILEOS          VOS_NT_WINDOWS32
+FILETYPE        VFT_APP
+FILESUBTYPE     VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName",      "Goat Client"
+            VALUE "FileDescription",  "Goat Client"
+            VALUE "FileVersion",      "4.22.0"
+            VALUE "InternalName",     "GoatClient"
+            VALUE "LegalCopyright",   "Copyright (C) 2026"
+            VALUE "OriginalFilename", "GoatClient.exe"
+            VALUE "ProductName",      "Goat Client"
+            VALUE "ProductVersion",   "4.22.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0409, 1200
+    END
+END
