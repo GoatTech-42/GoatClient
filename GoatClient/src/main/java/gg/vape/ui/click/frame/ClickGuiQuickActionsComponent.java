@@ -11,10 +11,8 @@ import gg.vape.ui.click.component.IconButtonComponent;
 import gg.vape.ui.click.frame.ClickGuiQuickActionActiveFrameIndicator;
 import gg.vape.ui.click.frame.ClickGuiQuickActionsFrameButton;
 import gg.vape.ui.click.frame.ClickGuiQuickActionsFrameToggleClickHandler;
-import gg.vape.ui.click.frame.ClickGuiQuickActionsOnlineSettingsButton;
 import gg.vape.ui.click.frame.ClickGuiQuickActionsVisibleModulesClickHandler;
 import gg.vape.ui.click.frame.impl.VisibleModuleListFrame;
-import gg.vape.ui.click.frame.impl.online.OnlineConnectionSettingsFrame;
 import gg.vape.ui.click.frame.impl.target.TargetInfoSettingsFrame;
 import gg.vape.unmap.ColorUtil;
 import gg.vape.utils.render.GuiRenderPrimitives;
@@ -23,7 +21,6 @@ import java.util.List;
 
 public class ClickGuiQuickActionsComponent
 extends GuiComponent {
-    private IconButtonComponent O;
     private List<ClickGuiQuickActionActiveFrameIndicator> v;
     private IconButtonComponent Q;
     private IconButtonComponent i = new IconButtonComponent("newfavorites", 0.8);
@@ -36,10 +33,6 @@ extends GuiComponent {
     @Override
     public double x() {
         return 110.0;
-    }
-
-    private static void lambda$new$0() {
-        OnlineConnectionSettingsFrame.getInstance().e(false);
     }
 
     public ClickGuiQuickActionsComponent() {

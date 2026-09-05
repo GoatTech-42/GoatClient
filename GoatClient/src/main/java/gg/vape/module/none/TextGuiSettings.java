@@ -77,11 +77,11 @@ extends ConfigSettingsModule {
         this.matchGuiColor = new ModeOption("Match GUI color");
         this.customColor = new ModeOption("Custom color");
         this.colorMode = ModeValue.create((Object)this, "Color Mode", this.moduleColor, this.moduleColor, this.matchGuiColor, this.customColor);
-        this.textGuiColor = ColorValue.create(this, "Text GUI color", new Color(206, 7, 7));
+        this.textGuiColor = ColorValue.create(this, "Text GUI color", new Color(47, 122, 229));
         this.clickDisable = BooleanValue.create(this, "Click disable", false, "Click modules in text gui to toggle them");
         this.shadow = BooleanValue.create(this, "Shadow", true, "Renders shadowed text");
         this.animations = BooleanValue.create(this, "Animations", true, "Use animations on text gui");
-        this.watermark = BooleanValue.create(this, "Watermark", false, "Renders a vape watermark");
+        this.watermark = BooleanValue.create(this, "Watermark", false, "Renders a Goat Client watermark");
         this.renderBackground = BooleanValue.create(this, "Render background", true);
         this.hideModules = BooleanValue.create(this, "Hide modules", false, "Allows you to blacklist certain modules from being shown");
         this.hiddenModules = (OptionalLimitValue)OptionalLimitValue.createWithDescription(this, "module-show-blacklist", "Hidden Modules", "Name of module to hide", OptionalLimitValue.BLOCK_LIST_COLOR, Arrays.asList("ESP", "NameTags", "StorageESP")).setSuggestionProvider(new ModuleNameSuggestionProvider());
