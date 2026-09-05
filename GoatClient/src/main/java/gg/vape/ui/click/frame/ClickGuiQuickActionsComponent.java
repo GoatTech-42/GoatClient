@@ -45,14 +45,12 @@ extends GuiComponent {
     public ClickGuiQuickActionsComponent() {
         this.v = new ArrayList<ClickGuiQuickActionActiveFrameIndicator>();
         this.setDisabledOverlayColor(ClickGuiQuickActionsComponent.J.i);
-        this.O = new ClickGuiQuickActionsOnlineSettingsButton(this, "vape_online", 0.75);
         this.Q = new ClickGuiQuickActionsFrameButton(this, "newoverlays", 0.6);
         this.Q.addClickListener(new ClickGuiQuickActionsFrameToggleClickHandler(this));
         this.Q.w("Open overlays menu");
-        this.O.addClickListener(ClickGuiQuickActionsComponent::lambda$new$0);
         this.i.addClickListener(new ClickGuiQuickActionsVisibleModulesClickHandler(this));
         this.i.w("Favorites");
-        this.addChildren(this.O, this.i, this.Q);
+        this.addChildren(this.i, this.Q);
         this.v.add(new ClickGuiQuickActionActiveFrameIndicator("newtextgui", ClientSettings.getFrame(TextGuiSettingsFrame.class), 5));
         this.v.add(new ClickGuiQuickActionActiveFrameIndicator("newrearview", ClientSettings.getFrame(OnlinePlayerPreviewSettingsFrame.class), 6));
         this.v.add(new ClickGuiQuickActionActiveFrameIndicator("newduelinfo", ClientSettings.getFrame(OnlineCombatStatsSettingsFrame.class), 6));
@@ -68,9 +66,6 @@ extends GuiComponent {
     @Override
     public void H() {
         GuiRenderPrimitives.C(this.G$src$D$1b2f02a(), this.n(), this.A(), this.L(), this.getDisabledOverlayColor());
-        this.O.K(this.G$src$D$1b2f02a() + 3.0);
-        this.O.S(this.n());
-        this.O.Y(this.L());
         this.i.K(this.G$src$D$1b2f02a() + this.A() - 32.0);
         this.i.S(this.n());
         this.i.Y(this.L());

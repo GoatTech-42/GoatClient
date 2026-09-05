@@ -236,12 +236,22 @@ static int injectLibrary(DWORD pid, const std::wstring& dllPath, std::wstring& e
         err = L"Remote LoadLibraryW did not finish within 30 seconds";
         goto cleanup;
     }
-    for (int attempt = 0; attempt < 100; ++attempt) {
-        if (remoteModuleByPath(pid, dllPath.c_str()) != 0) { result = 0; break; }
-        ::Sleep(50);
-    }
-    if (result != 0) {
-        err = L"DLL not mapped after LoadLibraryW (see vape421-native.log)";
+    {
+        // LoadLibraryW returns the module handle on success (NULL on failure).
+        // Read it directly instead of polling the (race-prone) module snapshot.
+        DWORD exitCode = 0;
+        if (::GetExitCodeThread(thread, &exitCode) && exitCode != 0) {
+            result = 0;
+        } else {
+            // Fall back to a brief module snapshot check for robustness.
+            for (int attempt = 0; attempt < 40; ++attempt) {
+                if (remoteModuleByPath(pid, dllPath.c_str()) != 0) { result = 0; break; }
+                ::Sleep(50);
+            }
+            if (result != 0) {
+                err = L"DLL failed to load in target (see goatclient-native.log)";
+            }
+        }
     }
 
 cleanup:

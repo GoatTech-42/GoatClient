@@ -44,14 +44,14 @@ public class ThemeColors {
     public final Color T;
     public final Color E;
     public final Color y;
-    public final Color B = new Color(5, 134, 105);
+    public final Color B = new Color(47, 122, 229);
     public final Color t;
     public final Color F;
     private Color x;
     public final Color z;
 
     public ThemeColors() {
-        this.O = new Color(6, 161, 126);
+        this.O = new Color(80, 141, 229);
         this.d = new Color(250, 50, 56);
         this.c = new Color(255, 89, 94);
         this.T = new Color(47, 122, 229);
@@ -63,7 +63,7 @@ public class ThemeColors {
         this.W = new Color(122, 122, 122);
         this.f = new Color(209, 209, 209);
         this.K = new Color(54, 53, 54);
-        this.U = new Color(5, 134, 105);
+        this.U = new Color(47, 122, 229);
         this.r = new Color(8, 8, 8);
         this.i = new Color(12, 12, 12);
         this.H = new Color(37, 36, 38);

@@ -66,7 +66,7 @@ public class ClientSettings {
     public final BooleanValue useReach;
     public static final ModeOption NO_MOVEMENT_CORRECTION;
     public final ModeValue movementCorrection;
-    public ColorValue guiColor = ColorValue.create(this, "Gui Color", new Color(110, 123, 139));
+    public ColorValue guiColor = ColorValue.create(this, "Gui Color", new Color(47, 122, 229));
     public static final ModeOption PROPER_MOVEMENT_CORRECTION;
 
     public static boolean isReservedEntity(Entity entity) {
