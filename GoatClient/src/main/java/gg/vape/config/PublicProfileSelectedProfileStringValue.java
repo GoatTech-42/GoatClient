@@ -18,7 +18,7 @@ extends StringValue {
         Profile activeProfile = Vape.INSTANCE.getProfilesManager().getActiveProfile();
         UUID onlineId = activeProfile.getOnlineId();
         if (onlineId == null) {
-            Vape.debugLog(activeProfile.getName() + MISSING_ONLINE_UUID_SUFFIX);
+            // Offline mode: no online uuid is expected, not an error. No log spam.
             return "";
         }
         return onlineId.toString();

@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 public class ItemStackSemanticResolver {
     private final List<ItemMappingEntry> mappings = new ArrayList<ItemMappingEntry>();
     private final List<ItemMappingEntry> legacyMappings = new ArrayList<ItemMappingEntry>();
-    public static boolean LOG_MISSING_MAPPINGS = true;
+    public static boolean LOG_MISSING_MAPPINGS = false;
 
     public void loadMappings() {
         String resourceName = "universal_items.csv";

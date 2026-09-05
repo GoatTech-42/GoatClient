@@ -36,41 +36,12 @@ public class SyncThread {
     }
 
     public void saveSettings() {
+        // Offline-only save: persist to ~/.goat-client/config.json. No network.
         try {
-            SettingsSyncStatusNotification notification = new SettingsSyncStatusNotification();
-            if (!this.vape.getPublicProfileSettings().autoSave.getEffectiveValue()) {
-                this.vape.getNotificationManager().enqueue(notification, true);
-            }
-
-            this.syncOnlineSettings();
             this.prepareActiveProfileForSave();
-
-            // Offline persistence: write the full config to ~/.goat-client/config.json.
             this.saveLocalConfig();
-
-            JsonObject settingsPayload = this.buildSettingsPayload(true);
-            JsonObject profilesPayload = this.vape.getProfilesManager().toJson(true);
-            for (Profile profile : this.vape.getProfilesManager().getProfiles()) {
-                profile.setSaveQueued(true);
-            }
-
-            ApiResponse<Boolean> settingsResponse = ApiServices.getInstance().getUserDataApi().saveUserData(settingsPayload)
-                    .exceptionally(error -> handleSettingsSaveFailure(notification, error))
-                    .join();
-            this.updateSettingsSaveStatus(notification, settingsResponse);
-
-            ApiResponse<RemoteProfileDataMap> profilesResponse = ApiServices.getInstance().getUserDataApi().saveProfileData(profilesPayload)
-                    .exceptionally(error -> handleProfilesSaveFailure(notification, error))
-                    .join();
-            this.updateProfilesSaveStatus(notification, profilesResponse);
-            this.applySavedProfileIds(profilesResponse);
-
-            notification.complete();
-            if (notification.hasSaveError() && this.vape.getPublicProfileSettings().autoSave.getEffectiveValue()) {
-                this.vape.getNotificationManager().show(notification);
-            }
         }
-        catch (Exception exception) {
+        catch (Throwable exception) {
             Vape.logThrowable(exception);
         }
         finally {
@@ -204,7 +175,7 @@ public class SyncThread {
         this.pendingSave.set(false);
         if (this.storeRequestWorker == null) {
             this.storeRequestWorker = new SyncStoreRequestWorker();
-            new Thread(this.storeRequestWorker, "Vape settings save worker").start();
+            new Thread(this.storeRequestWorker, "Goat settings save worker").start();
         }
         this.storeRequestWorker.requestSave();
     }
@@ -286,7 +257,7 @@ public class SyncThread {
     }
 
     public void start() {
-        new Thread(this.debounceWorker, "Vape settings sync worker").start();
+        new Thread(this.debounceWorker, "Goat settings sync worker").start();
     }
 
     private void syncOnlineSettings() {
