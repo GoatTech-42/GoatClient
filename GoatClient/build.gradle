@@ -4,8 +4,8 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
-group = 'gg.vape.recovery'
-version = '4.21-recovered'
+group = 'gg.goatclient'
+version = '4.22'
 
 java {
     toolchain {
@@ -138,9 +138,9 @@ tasks.register('injectionJar', com.github.jengelman.gradle.plugins.shadow.tasks.
     exclude 'module-info.class', 'META-INF/versions/**'
     manifest {
         attributes(
-                'Implementation-Title': 'Vape 4.21 recovered Java payload',
+                'Implementation-Title': 'Goat Client Java payload',
                 'Implementation-Version': project.version,
-                'Vape421-Target-Java': '8')
+                'GoatClient-Target-Java': '8')
     }
 }
 

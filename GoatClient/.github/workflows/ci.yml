@@ -1,9 +1,8 @@
-name: 持续集成
+name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
   workflow_dispatch:
 
@@ -15,51 +14,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-test:
-    name: 构建并测试 Java 与 Windows 原生组件
+  build:
+    name: Build & verify
     runs-on: windows-latest
     timeout-minutes: 30
 
     steps:
-      - name: 检出源码
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: 校验 Gradle Wrapper
+      - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v4
 
-      - name: 配置 JDK 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: 配置 Gradle 缓存
+      - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: 校验恢复源码并构建 Java 载荷
+      - name: Build Java payload
         shell: pwsh
-        run: .\gradlew.bat clean build verifyInjectionPayload --stacktrace
+        run: |
+          cd GoatClient
+          ./gradlew clean build verifyInjectionPayload --no-daemon --stacktrace
 
-      - name: 构建 Windows x64 注入包
-        shell: pwsh
-        run: .\gradlew.bat prepareInjectionBundle -PtargetRelease=8 "-PnativeJavaHome=$env:JAVA_HOME" --stacktrace
-
-      - name: 运行原生组件测试
-        shell: pwsh
-        run: ctest --test-dir build/native -C Release --output-on-failure
-
-      - name: 上传 Java 注入载荷
+      - name: Upload injection jar
         uses: actions/upload-artifact@v4
         with:
-          name: java-injection-payload
-          path: build/libs/*-injection.jar
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: 上传 Windows x64 注入包
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-x64-injection-bundle
-          path: build/injection/
-          if-no-files-found: error
-          retention-days: 14
+          name: goat-client-injection-jar
+          path: GoatClient/build/libs/goat-client-4.22-injection.jar

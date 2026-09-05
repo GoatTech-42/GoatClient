@@ -674,7 +674,7 @@ private:
     void drawLogo(Gdiplus::Graphics& g, float y) {
         if (logo_ && logo_->GetLastStatus() == Gdiplus::Ok) {
             const float w = 240.0f;
-            const float h = w * 42.0f / 265.0f; // keep wordmark aspect
+            const float h = w * 47.0f / 333.0f; // keep wordmark aspect (333x47)
             g.DrawImage(logo_.get(), (CanvasWidth - w) / 2.0f, y, w, h);
         }
     }

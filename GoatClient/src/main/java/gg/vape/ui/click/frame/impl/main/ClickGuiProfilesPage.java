@@ -75,7 +75,7 @@ implements EventListener {
         Profile profile = Vape.INSTANCE.getProfilesManager().getActiveProfile();
         profile.captureCurrentState();
         this.previousActiveProfile = profile;
-        this.draftProfile = new Profile(profile.getName(), "4.21");
+        this.draftProfile = new Profile(profile.getName(), "4.22");
         this.draftProfile.loadJson(profile.toJson(true));
         this.draftProfile.setLocalId(UUID.randomUUID());
         this.draftProfile.setOnlineId(null);

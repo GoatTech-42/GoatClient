@@ -24,7 +24,7 @@ public class PublicProfilePartialJsonPayloadBuilder {
         payload.addProperty("profileId", (Number)profileId);
         payload.add("derivedFrom", ApiHttpClient.GSON.toJsonTree((Object)derivedFrom));
         payload.addProperty("name", name);
-        payload.addProperty("vapeVersion", "4.21");
+        payload.addProperty("vapeVersion", "4.22");
         payload.addProperty("description", description);
         payload.add("tags", (JsonElement)tagsJson);
         payload.addProperty("listed", listed);

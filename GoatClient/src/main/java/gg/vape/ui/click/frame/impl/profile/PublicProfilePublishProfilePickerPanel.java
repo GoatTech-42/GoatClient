@@ -38,7 +38,7 @@ extends PanelComponent {
         iconTextActionRowComponent.o(this.A());
         iconTextActionRowComponent.setClickListener(() -> {
             UUID uUID = Vape.INSTANCE.getProfilesManager().getActiveProfile().getOnlineId();
-            Profile profile = new Profile("Current settings", "4.21");
+            Profile profile = new Profile("Current settings", "4.22");
             profile.setDraft(true);
             profile.setOnlineId(uUID);
             profile.captureCurrentState();

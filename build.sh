@@ -46,7 +46,7 @@ echo "==> [1/4] Building Java injection payload (gradle)"
   JAVA_HOME="$JAVA_HOME" PATH="$JAVA_HOME/bin:$PATH" \
   ./gradlew clean build verifyInjectionPayload --no-daemon )
 
-JAR="$ROOT/GoatClient/build/libs/goat-client-4.21-recovered-injection.jar"
+JAR="$ROOT/GoatClient/build/libs/goat-client-4.22-injection.jar"
 if [ ! -f "$JAR" ]; then
     echo "error: injection jar not found: $JAR" >&2
     exit 1

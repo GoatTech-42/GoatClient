@@ -10,7 +10,6 @@ import java.util.UUID;
 public class PublicProfileSelectedProfileStringValue
 extends StringValue {
     final PublicProfileSettings settings;
-    private static final String MISSING_ONLINE_UUID_SUFFIX = " has no online uuid";
 
 
     @Override

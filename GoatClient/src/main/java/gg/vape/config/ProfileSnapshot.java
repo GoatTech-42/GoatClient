@@ -127,7 +127,7 @@ public class ProfileSnapshot {
             }
             return localProfile.createSnapshot(true);
         }
-        Profile detachedProfile = new Profile(publicProfile.getName(), "4.21");
+        Profile detachedProfile = new Profile(publicProfile.getName(), "4.22");
         JsonArray modulesJson = ApiHttpClient.GSON.fromJson(serializedModules != null ? ApiHttpClient.GSON.toJson(serializedModules) : "[]", JsonArray.class);
         JsonObject profileData = new JsonObject();
         JsonObject data = new JsonObject();

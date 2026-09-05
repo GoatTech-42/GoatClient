@@ -1,8 +1,3 @@
-# upstream clones (superseded by auto-injector + offline mode)
-VapeLoader/
-VapeService/
-OpenVape/
-
 # build outputs (binaries)
 build/
 GoatClient.exe
@@ -11,15 +6,12 @@ goatclient-native.log
 *.jar
 *.o
 *.res.o
+*.class
 
 # gradle / ide
 GoatClient/build/
 GoatClient/.gradle/
 GoatClient/out/
-VapeService/build/
-VapeService/.gradle/
-VapeLoader/build/
-VapeLoader/.gradle/
 .idea/
 *.iml
 *.ipr

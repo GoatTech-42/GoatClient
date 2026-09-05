@@ -267,7 +267,7 @@ extends PublicProfileOverlayPanelBase {
         if ((object = this.sourceProfile.copyPublishedData()) == null) {
             Vape.INSTANCE.getProfilesManager().captureProfileState(this.sourceProfile);
         }
-        return ApiServices.getInstance().getPublicProfileApi().createProfile(PublicProfileJsonPayloadBuilder.build(string, "4.21", string2, arrayList, !bl, bl3, bl2, this.sourceProfile.getOnlineId(), (com.google.gson.JsonObject)object)).whenCompleteAsync(this::handlePublishComplete, (Executor)ClientSettings.UI_EXECUTOR).exceptionally(ProfilePublishEditorPanel::ignoreHandledPublishFailure);
+        return ApiServices.getInstance().getPublicProfileApi().createProfile(PublicProfileJsonPayloadBuilder.build(string, "4.22", string2, arrayList, !bl, bl3, bl2, this.sourceProfile.getOnlineId(), (com.google.gson.JsonObject)object)).whenCompleteAsync(this::handlePublishComplete, (Executor)ClientSettings.UI_EXECUTOR).exceptionally(ProfilePublishEditorPanel::ignoreHandledPublishFailure);
     }
 
     @Override
