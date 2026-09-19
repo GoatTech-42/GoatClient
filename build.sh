@@ -14,17 +14,33 @@ AUTOINJECT="$NATIVE/autoinject"
 OUT="$ROOT/GoatClient/build"
 
 # --- toolchain detection ---
+# Order: explicit MINGW_BIN > clang+windres on PATH > pinned local toolchain
+# (.toolchain/llvm-mingw, auto-fetched by tools/fetch-mingw.sh).
 if [ -z "${MINGW_BIN:-}" ]; then
-    # llvm-mingw is typically on PATH; try to find it.
     MINGW_BIN="$(dirname "$(command -v clang 2>/dev/null || true)")"
     if [ -z "$MINGW_BIN" ] || [ ! -x "$MINGW_BIN/windres" ]; then
-        echo "error: llvm-mingw clang + windres not found on PATH. Set MINGW_BIN." >&2
-        exit 1
+        MINGW_BIN=""
     fi
 fi
-CLANG="$MINGW_BIN/clang"
-CLANGXX="$MINGW_BIN/clang++"
-WINDRES="$MINGW_BIN/windres"
+if [ -z "$MINGW_BIN" ]; then
+    if [ ! -x "$ROOT/.toolchain/llvm-mingw/bin/clang" ]; then
+        echo "==> llvm-mingw not found; fetching pinned toolchain"
+        "$ROOT/tools/fetch-mingw.sh"
+    fi
+    MINGW_BIN="$ROOT/.toolchain/llvm-mingw/bin"
+fi
+# llvm-mingw ships target-prefixed tools; a PATH clang usually isn't prefixed.
+if [ -x "$MINGW_BIN/x86_64-w64-mingw32-clang" ]; then
+    PFX="x86_64-w64-mingw32-"
+else
+    PFX=""
+fi
+CLANG="$MINGW_BIN/${PFX}clang"
+CLANGXX="$MINGW_BIN/${PFX}clang++"
+WINDRES="$MINGW_BIN/${PFX}windres"
+for t in "$CLANG" "$CLANGXX" "$WINDRES"; do
+    [ -x "$t" ] || { echo "error: required tool not executable: $t" >&2; exit 1; }
+done
 
 if [ -z "${JAVA_HOME:-}" ]; then
     # prefer a local JDK 17
@@ -60,7 +76,9 @@ WORK="$OUT/native-work"
 rm -rf "$WORK"; mkdir -p "$WORK"
 
 JDKINC="$JAVA_HOME/include"
-CFLAGS="-O2 -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -I$JDKINC -I$JDKINC/win32 -I$NATIVE"
+# jnicross supplies a bundled win32 jni_md.h so cross builds work from any
+# host JDK; it precedes the JDK's own platform dir on the include path.
+CFLAGS="-O2 -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -I$JDKINC -I$NATIVE/jnicross -I$NATIVE"
 
 "$CLANG" $CFLAGS -c "$NATIVE/dllmain.c"         -o "$WORK/dllmain.o"
 "$CLANG" $CFLAGS -c "$NATIVE/loader_bootstrap.c" -o "$WORK/loader_bootstrap.o"

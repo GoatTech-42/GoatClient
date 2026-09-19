@@ -23,3 +23,5 @@ GoatClient/out/
 # temp
 tmp-*/
 javap-*.txt
+.toolchain/
+!GoatClient/gradle/wrapper/gradle-wrapper.jar
