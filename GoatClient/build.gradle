@@ -56,7 +56,9 @@ tasks.withType(JavaCompile).configureEach {
     // runtime distribution constrained to a Java 8 compiler.
     // Product default is 17; pass -PtargetRelease=8 to prove Java 8 (MC 1.8.9) compatibility.
     options.release = (project.findProperty('targetRelease') ?: '17') as int
-    options.compilerArgs += ['-Xmaxerrs', '10000', '-Xdiags:verbose']
+    options.compilerArgs += ['-Xmaxerrs', '10000', '-Xdiags:verbose',
+        // Quality floor: surface everything javac can tell us.
+        '-Xlint:all']
 }
 
 tasks.register('verifyRecoveredSources') {
