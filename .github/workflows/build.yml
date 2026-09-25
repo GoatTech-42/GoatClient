@@ -1,0 +1,39 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  windows-client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Fetch pinned llvm-mingw toolchain
+        run: tools/fetch-mingw.sh
+
+      - name: Build (payload jar + native DLL + auto-injector EXE)
+        run: bash build.sh
+
+      - name: Verify artifacts
+        run: |
+          test -f GoatClient/build/GoatClient.exe
+          test -f GoatClient/build/GoatClientNative.dll
+          ls -la GoatClient/build/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GoatClient-windows
+          path: |
+            GoatClient/build/GoatClient.exe
+            GoatClient/build/GoatClientNative.dll
+          retention-days: 30
