@@ -46,11 +46,9 @@ Also supports **Lunar Client 1.8.9** and **Badlion Client 1.8.9** injection.
 
 ## Usage (prebuilt)
 
-1. Run `Defender-Exclusion.ps1` **as administrator** (one time) so Windows
-   Defender doesn't block the DLL injection.
-2. Launch Minecraft (64-bit) and wait for the main menu, or join a world.
-3. Double-click `GoatClient.exe`. It finds Minecraft and injects automatically.
-4. In game, press **RIGHT SHIFT** to open the GUI.
+1. Launch Minecraft (64-bit) and wait for the main menu, or join a world.
+2. Double-click `GoatClient.exe`. It finds Minecraft and injects automatically.
+3. In game, press **RIGHT SHIFT** to open the GUI.
 
 On success, `goatclient-native.log` (next to the EXE) ends with:
 
@@ -124,8 +122,6 @@ game's classloader (URL / Fabric Knot / Forge ModLauncher aware), and calls
 
 - This is a **cheat client**. Using it on multiplayer servers can get you banned.
 - It is a reverse-engineered recovery, **not** the official Vape product.
-- Windows Defender flags DLL injection by behavior (`CreateRemoteThread`); the
-  one-time exclusion in `Defender-Exclusion.ps1` is required.
 
 ---
 

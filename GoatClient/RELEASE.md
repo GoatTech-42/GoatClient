@@ -32,6 +32,4 @@
 ## Known limitations
 
 - 1.16.5 support is incomplete (mapping/rendering issues).
-- Windows Defender flags DLL injection by behavior; run
-  `Defender-Exclusion.ps1` as administrator once.
 - This is a cheat client — multiplayer use risks a ban.
