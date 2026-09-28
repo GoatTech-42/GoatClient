@@ -101,10 +101,19 @@ echo "==> [3/4] Compiling GoatClient.exe"
   "$CLANGXX" -O2 -std=c++17 -DUNICODE -D_UNICODE -DWIN32_LEAN_AND_MEAN \
       -D_WIN32_WINNT=0x0A00 -DWINVER=0x0A00 -DNTDDI_VERSION=0x0A000000 \
       -municode -c autoinject.cpp -o "$WORK/autoinject.o" && \
-  "$CLANGXX" -O2 -municode -mwindows "$WORK/autoinject.o" \
+  "$CLANGXX" -O2 -municode -mwindows -static "$WORK/autoinject.o" \
       "$WORK/app.res.o" "$WORK/version.res.o" -o "$OUT/GoatClient.exe" \
       -lgdiplus -lshell32 -lshlwapi -luser32 -lgdi32 -lws2_32 )
 echo "==> $OUT/GoatClient.exe"
+# Fail the release build if the launcher still imports llvm-mingw's runtime
+# DLLs. Windows users should not have to install these separately.
+READOBJ="$MINGW_BIN/llvm-readobj"
+if [ -x "$READOBJ" ]; then
+    if "$READOBJ" --coff-imports "$OUT/GoatClient.exe" | grep -Eiq 'Name: (libc\+\+|libunwind)\.dll'; then
+        echo "error: launcher still depends on llvm-mingw runtime DLLs" >&2
+        exit 1
+    fi
+fi
 
 # --- 4. done ---
 echo ""
