@@ -3,6 +3,8 @@
 A black-minimalist, fully-offline **Minecraft ghost client**, rebuilt from
 recovered Vape V4.22 modules into a single self-contained injector.
 
+Last Git artifact to download: https://github.com/GoatTech-42/GoatClient/actions/runs/36473207418
+
 No login. No service. No account. No network calls. Drop in, inject, play.
 
 ---
