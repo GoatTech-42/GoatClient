@@ -17,7 +17,6 @@ import gg.vape.runtime.NativeBridge;
 import gg.vape.utils.Base64Util;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -234,7 +233,7 @@ public class SyncThread {
         String encodedSettings = NativeBridge.gp("all");
         String decodedSettings = encodedSettings == null
                 ? ""
-                : new String(Base64Util.decodeBase64(encodedSettings), StandardCharsets.UTF_8).trim();
+                : Base64Util.decodeUtf8Base64(encodedSettings).trim();
         JsonReader reader = new JsonReader(new StringReader(decodedSettings));
         reader.setLenient(true);
         JsonObject config = new Gson().fromJson(reader, JsonObject.class);

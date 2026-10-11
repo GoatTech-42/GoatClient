@@ -25,6 +25,13 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.StandardCopyOption;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import java.io.StringReader;
 
 public class NativeBridge {
     private static final String DEFAULT_CONFIG_JSON = "{"
@@ -659,7 +666,7 @@ public class NativeBridge {
 
     public static String sp(String key, String value) {
         if ("all".equals(key) && value != null && !value.isEmpty()) {
-            saveConfigText(new String(Base64Util.decodeBase64(value), StandardCharsets.UTF_8));
+            saveConfigText(Base64Util.decodeUtf8Base64(value));
         }
         return null;
     }
@@ -701,46 +708,74 @@ public class NativeBridge {
         return cachedConfigText;
     }
 
-    private static synchronized void saveConfigText(String rawJson) {
-        if (rawJson == null || rawJson.trim().isEmpty()) {
-            return;
-        }
+    private static synchronized boolean saveConfigText(String rawJson) {
         try {
-            Path path = configFile();
-            Files.createDirectories(path.getParent());
-            Files.write(path, rawJson.getBytes(StandardCharsets.UTF_8));
+            if (rawJson == null) {
+                return false;
+            }
+            // JsonParser and Gson.fromJson enable lenient parsing internally.
+            // Read the adapter directly so JsonReader keeps its strict mode.
+            try (JsonReader reader = new JsonReader(new StringReader(rawJson))) {
+                reader.setLenient(false);
+                JsonElement parsed = new Gson().getAdapter(JsonElement.class).read(reader);
+                if (!parsed.isJsonObject() || reader.peek() != JsonToken.END_DOCUMENT) {
+                    return false;
+                }
+            }
+            writeConfigFile(configFile(), rawJson);
             cachedConfigText = rawJson;
+            return true;
         }
-        catch (Throwable error) {
+        catch (Exception error) {
             Vape.logThrowable(error);
+            return false;
+        }
+    }
+
+    // Stage in the destination directory so an interrupted write cannot truncate
+    // the existing config. Some filesystems do not support atomic replacement.
+    private static void writeConfigFile(Path destination, String text) throws java.io.IOException {
+        Path path = destination.toAbsolutePath();
+        Files.createDirectories(path.getParent());
+        Path temporary = Files.createTempFile(path.getParent(), "goat-config-", ".tmp");
+        try {
+            Files.write(temporary, text.getBytes(StandardCharsets.UTF_8));
+            try {
+                Files.move(temporary, path, StandardCopyOption.ATOMIC_MOVE,
+                        StandardCopyOption.REPLACE_EXISTING);
+            }
+            catch (AtomicMoveNotSupportedException unsupported) {
+                Files.move(temporary, path, StandardCopyOption.REPLACE_EXISTING);
+            }
+        }
+        finally {
+            Files.deleteIfExists(temporary);
         }
     }
 
     // Export the current config to a user-chosen JSON file.
     public static boolean exportConfig(String filePath) {
         try {
-            Path path = new File(filePath).toPath();
-            Files.createDirectories(path.getParent());
-            Files.write(path, loadConfigText().getBytes(StandardCharsets.UTF_8));
+            writeConfigFile(new File(filePath).toPath(), loadConfigText());
             return true;
         }
-        catch (Throwable error) {
+        catch (Exception error) {
             Vape.logThrowable(error);
             return false;
         }
     }
 
-    // Import a config from a JSON file, overwriting the current config.
+    // Validate imports before replacing the current config, and only report
+    // success once the new file has been written.
     public static boolean importConfig(String filePath) {
         try {
             Path path = new File(filePath).toPath();
             if (!Files.isRegularFile(path)) {
                 return false;
             }
-            saveConfigText(new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
-            return true;
+            return saveConfigText(new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
         }
-        catch (Throwable error) {
+        catch (Exception error) {
             Vape.logThrowable(error);
             return false;
         }
